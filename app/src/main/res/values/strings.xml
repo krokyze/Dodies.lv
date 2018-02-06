@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">Dodies.lv</string>
+    <string name="menu_map">Karte</string>
+    <string name="menu_favorites">Favorīti</string>
+
+    <string name="distance_holder" formatted="false">(%s km)</string>
+    <string name="coordinates_holder" formatted="false">Koordinātas: %f, %f</string>
+    <string name="date_holder" formatted="false">Apsekots: %s</string>
+
+    <string-array name="coordinates_dialog_items">
+        <item>Kopēt</item>
+        <item>Atvērt</item>
+    </string-array>
+
+    <string name="see_more">Skatīt vairāk</string>
+
+    <string name="favorites_empty">Dotajā brīdī Jums nav neviena favorīta.</string>
+</resources>
