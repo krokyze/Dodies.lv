@@ -13,7 +13,8 @@ import com.krokyze.dodies.repository.api.LocationResponse
  */
 @Entity(tableName = "locations")
 data class Location(@PrimaryKey
-                    @ColumnInfo(name = "name") val name: String,
+                    @ColumnInfo(name = "id") val id: String,
+                    val name: String,
                     val type: Type,
                     val url: String,
                     @Embedded val image: Image,
@@ -67,7 +68,9 @@ data class Location(@PrimaryKey
 
     // constructor to map api location structure to db structure
     constructor(location: LocationResponse.Location) :
-            this(name = location.properties.name,
+            // better than using name as primary key
+            this(id = location.geometry.coordinates.joinToString(":"),
+                    name = location.properties.name,
                     type = location.properties.type.let { Type.fromString(it) },
                     url = location.properties.url,
                     image = location.properties.let { Image(it.imgSmall, it.imgLarge) },

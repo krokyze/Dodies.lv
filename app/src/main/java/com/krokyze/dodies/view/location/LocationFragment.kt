@@ -9,6 +9,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.support.design.widget.BottomSheetDialogFragment
 import android.support.v7.app.AlertDialog
+import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -35,10 +36,10 @@ class LocationFragment : BottomSheetDialogFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        val locationName = arguments!!.getString(LOCATION_NAME)
+        val locationId = arguments!!.getString(LOCATION_ID)
 
-        val factory = LocationViewModel.Factory(locationName)
-        viewModel = ViewModelProviders.of(this, factory).get(locationName, LocationViewModel::class.java)
+        val factory = LocationViewModel.Factory(locationId)
+        viewModel = ViewModelProviders.of(this, factory).get(locationId, LocationViewModel::class.java)
     }
 
     override fun onStart() {
@@ -72,7 +73,7 @@ class LocationFragment : BottomSheetDialogFragment() {
         }
         favorite_image_view.setOnClickListener { viewModel.onFavorite(location) }
 
-        coordinates_text_view.text = getString(R.string.coordinates_holder, location.coordinates.latitude, location.coordinates.longitude)
+        coordinates_text_view.text = Html.fromHtml(getString(R.string.coordinates_holder, location.coordinates.latitude, location.coordinates.longitude))
         coordinates_text_view.setOnClickListener {
             AlertDialog.Builder(context!!)
                     .setItems(R.array.coordinates_dialog_items, { _, index ->
@@ -118,11 +119,11 @@ class LocationFragment : BottomSheetDialogFragment() {
     }
 
     companion object {
-        private const val LOCATION_NAME = "location_name"
+        private const val LOCATION_ID = "location_id"
 
         fun newInstance(location: Location): LocationFragment {
             val bundle = Bundle()
-            bundle.putSerializable(LOCATION_NAME, location.name)
+            bundle.putString(LOCATION_ID, location.id)
             return LocationFragment().apply { arguments = bundle }
         }
     }

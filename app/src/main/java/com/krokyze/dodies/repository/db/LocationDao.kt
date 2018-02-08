@@ -14,8 +14,8 @@ interface LocationDao {
     @Query("SELECT * FROM locations")
     fun getLocations(): Single<List<Location>>
 
-    @Query("SELECT * FROM locations WHERE name = :name")
-    fun getLocation(name: String): Flowable<Location>
+    @Query("SELECT * FROM locations WHERE id = :id")
+    fun getLocation(id: String): Flowable<Location>
 
     @Query("SELECT * FROM locations WHERE favorite = 1")
     fun getFavoriteLocations(): Flowable<List<Location>>

@@ -11,7 +11,7 @@ android {
         applicationId "com.krokyze.dodies"
         minSdkVersion 21
         targetSdkVersion 27
-        versionCode 1
+        versionCode 3
         versionName "1.0"
     }
     buildTypes {

@@ -19,7 +19,6 @@ class LocationRepository(private val locationApi: LocationApi,
                          private val assetManager: AssetManager) {
 
     fun getLocations(): Observable<List<Location>> {
-        // Drop DB data if we can fetch from the API
         return Observable.concatArrayEager(getLocationsFromDb(), getLocationsFromApi())
                 .debounce(400, TimeUnit.MILLISECONDS)
     }
@@ -80,10 +79,13 @@ class LocationRepository(private val locationApi: LocationApi,
                 .first(emptyList())
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
-                .map { it.map { it.name } }
-                .subscribe { favoriteLocations ->
+                .map { it.map { it.id } }
+                .subscribe { favoriteIds ->
                     // save favorite information
-                    locations.forEach { it.favorite = favoriteLocations.contains(it.name) }
+                    favoriteIds.forEach { favoriteId ->
+                        locations.firstOrNull { it.id == favoriteId }
+                                ?.favorite = true
+                    }
 
                     locationDao.deleteAll()
                     locationDao.insertAll(locations)
