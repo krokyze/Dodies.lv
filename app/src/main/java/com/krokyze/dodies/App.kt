@@ -49,7 +49,7 @@ class App : Application() {
                 .build()
         val locationDao = appDatabase.locationDao()
 
-        locationRepository = LocationRepository(locationApi, locationDao)
+        locationRepository = LocationRepository(locationApi, locationDao, assets)
     }
 
     /** A tree which logs important information for crash reporting.  */

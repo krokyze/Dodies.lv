@@ -1,6 +1,9 @@
 package com.krokyze.dodies.repository
 
+import android.content.res.AssetManager
+import com.google.gson.Gson
 import com.krokyze.dodies.repository.api.LocationApi
+import com.krokyze.dodies.repository.api.LocationResponse
 import com.krokyze.dodies.repository.data.Location
 import com.krokyze.dodies.repository.db.LocationDao
 import io.reactivex.Observable
@@ -12,18 +15,13 @@ import java.util.concurrent.TimeUnit
  * Created by krokyze on 05/02/2018.
  */
 class LocationRepository(private val locationApi: LocationApi,
-                         private val locationDao: LocationDao) {
+                         private val locationDao: LocationDao,
+                         private val assetManager: AssetManager) {
 
     fun getLocations(): Observable<List<Location>> {
         // Drop DB data if we can fetch from the API
-        return Observable.concatArrayEager(
-                getLocationsFromDb(),
-                getLocationsFromApi()
-                        .materialize()
-                        .filter { !it.isOnError }
-                        .dematerialize<List<Location>>()
-                        .debounce(400, TimeUnit.MILLISECONDS)
-        )
+        return Observable.concatArrayEager(getLocationsFromDb(), getLocationsFromApi())
+                .debounce(400, TimeUnit.MILLISECONDS)
     }
 
     fun getLocation(name: String) = locationDao.getLocation(name)
@@ -46,6 +44,7 @@ class LocationRepository(private val locationApi: LocationApi,
                 .doOnNext {
                     Timber.d("Dispatching ${it.size} locations from DB...")
                 }
+                .switchIfEmpty(getLocationsFromAssets())
     }
 
     private fun getLocationsFromApi(): Observable<List<Location>> {
@@ -56,6 +55,22 @@ class LocationRepository(private val locationApi: LocationApi,
                 }
                 .doOnNext {
                     Timber.d("Dispatching ${it.size} locations from API...")
+                    saveLocationsInDb(it)
+                }
+                .materialize()
+                .filter { !it.isOnError }
+                .dematerialize<List<Location>>()
+    }
+
+    private fun getLocationsFromAssets(): Observable<List<Location>> {
+        return Observable.just(assetManager.open("locations.json")
+                .reader()
+                .use { reader ->
+                    Gson().fromJson(reader, LocationResponse::class.java)
+                            .locations.map { Location(it) }
+                })
+                .doOnNext {
+                    Timber.d("Dispatching ${it.size} locations from Assets...")
                     saveLocationsInDb(it)
                 }
     }
@@ -72,7 +87,7 @@ class LocationRepository(private val locationApi: LocationApi,
 
                     locationDao.deleteAll()
                     locationDao.insertAll(locations)
-                    Timber.d("Inserted ${locations.size} locations from API in DB...")
+                    Timber.d("Inserted ${locations.size} locations from in DB...")
                 }
     }
 
