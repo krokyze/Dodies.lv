@@ -42,8 +42,8 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
-        val clusterManager = ClusterManager<Location>(context, googleMap)
-        clusterManager.renderer = ClusterRenderer(context!!, googleMap, clusterManager)
+        val clusterManager = ClusterManager<Location>(requireContext(), googleMap)
+        clusterManager.renderer = ClusterRenderer(requireContext(), googleMap, clusterManager)
         clusterManager.setOnClusterItemInfoWindowClickListener { location ->
             LocationFragment.newInstance(location)
                     .show(childFragmentManager, null)

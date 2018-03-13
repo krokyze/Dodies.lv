@@ -32,8 +32,8 @@ class FavoritesFragment : Fragment(), FavoritesAdapter.OnLocationClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         recycler_view.adapter = adapter
-        recycler_view.layoutManager = LinearLayoutManager(context)
-        recycler_view.addItemDecoration(FavoritesItemDecoration(context!!))
+        recycler_view.layoutManager = LinearLayoutManager(requireContext())
+        recycler_view.addItemDecoration(FavoritesItemDecoration(requireContext()))
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

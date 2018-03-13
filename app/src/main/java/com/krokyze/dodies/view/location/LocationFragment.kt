@@ -75,12 +75,12 @@ class LocationFragment : BottomSheetDialogFragment() {
 
         coordinates_text_view.text = Html.fromHtml(getString(R.string.coordinates_holder, location.coordinates.latitude, location.coordinates.longitude))
         coordinates_text_view.setOnClickListener {
-            AlertDialog.Builder(context!!)
+            AlertDialog.Builder(requireContext())
                     .setItems(R.array.coordinates_dialog_items, { _, index ->
                         val locationString = "${location.coordinates.latitude},${location.coordinates.longitude}"
                         when (index) {
                             0 -> {
-                                val clipboardManager = activity!!.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                                val clipboardManager = requireContext().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
                                 clipboardManager.primaryClip = ClipData.newPlainText(location.name, locationString)
                             }
                             1 -> {
