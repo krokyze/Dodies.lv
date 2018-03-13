@@ -15,4 +15,6 @@
     <string name="see_more">Skatīt vairāk</string>
 
     <string name="favorites_empty">Dotajā brīdī Jums nav neviena favorīta.</string>
+
+    <string name="about_url">http://dodies.lv/par/?q=lv</string>
 </resources>

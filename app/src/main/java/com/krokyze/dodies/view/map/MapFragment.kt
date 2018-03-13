@@ -1,6 +1,8 @@
 package com.krokyze.dodies.view.map
 
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
@@ -18,6 +20,7 @@ import com.krokyze.dodies.view.location.LocationFragment
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
+import kotlinx.android.synthetic.main.fragment_map.*
 import timber.log.Timber
 
 
@@ -34,6 +37,11 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         super.onViewCreated(view, savedInstanceState)
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         (childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment).getMapAsync(this)
+
+        about.setOnClickListener {
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.about_url)))
+            startActivity(intent)
+        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
