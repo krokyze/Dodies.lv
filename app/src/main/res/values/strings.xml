@@ -4,8 +4,8 @@
     <string name="menu_favorites">Favorīti</string>
 
     <string name="distance_holder" formatted="false">(%s km)</string>
-    <string name="coordinates_holder" formatted="false">Koordinātas: <![CDATA[<font color=#388E3C>%f, %f</font>]]></string>
-    <string name="date_holder" formatted="false">Apsekots: %s</string>
+    <string name="coordinates_title" formatted="false">Koordinātas:</string>
+    <string name="date_title" formatted="false">Apsekots:</string>
 
     <string-array name="coordinates_dialog_items">
         <item>Kopēt</item>

@@ -5,6 +5,8 @@ import android.arch.persistence.room.Room
 import android.support.annotation.NonNull
 import android.util.Log
 import com.crashlytics.android.Crashlytics
+import com.facebook.drawee.backends.pipeline.Fresco
+import com.facebook.soloader.SoLoader
 import com.facebook.stetho.Stetho
 import com.krokyze.dodies.repository.LocationRepository
 import com.krokyze.dodies.repository.api.LocationApi
@@ -30,6 +32,9 @@ class App : Application() {
         super.onCreate()
         Fabric.with(this, Crashlytics())
         Stetho.initializeWithDefaults(this)
+
+        Fresco.initialize(this)
+        SoLoader.init(this, false)
 
         if (BuildConfig.DEBUG) {
             Timber.plant(DebugTree())

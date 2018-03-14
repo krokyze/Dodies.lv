@@ -1,19 +1,17 @@
 package com.krokyze.dodies.view.location
 
+import android.app.Dialog
 import android.arch.lifecycle.ViewModelProviders
-import android.content.ClipData
-import android.content.ClipboardManager
-import android.content.Context
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
+import android.support.design.widget.BottomSheetBehavior
+import android.support.design.widget.BottomSheetDialog
 import android.support.design.widget.BottomSheetDialogFragment
-import android.support.v7.app.AlertDialog
-import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.bumptech.glide.Glide
+import com.facebook.litho.Component
+import com.facebook.litho.ComponentContext
+import com.facebook.litho.ComponentTree
 import com.krokyze.dodies.R
 import com.krokyze.dodies.repository.data.Location
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -30,7 +28,19 @@ class LocationFragment : BottomSheetDialogFragment() {
     private lateinit var viewModel: LocationViewModel
     private var disposable: Disposable? = null
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    private val componentContext by lazy { ComponentContext(requireContext()) }
+
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        return super.onCreateDialog(savedInstanceState).apply {
+            setOnShowListener { dialogInterface ->
+                val dialog = dialogInterface as BottomSheetDialog
+                val bottomSheet = dialog.findViewById<View>(android.support.design.R.id.design_bottom_sheet)
+                BottomSheetBehavior.from(bottomSheet).state = BottomSheetBehavior.STATE_EXPANDED
+            }
+        }
+    }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         return inflater.inflate(R.layout.fragment_location, container, false)
     }
 
@@ -51,66 +61,24 @@ class LocationFragment : BottomSheetDialogFragment() {
     }
 
     private fun onLocation(location: Location) {
-        if (location.image.small.isNotEmpty()) {
-            image_view.visibility = View.VISIBLE
-            Glide.with(image_view)
-                    .load(location.image.small)
-                    .into(image_view)
+        if (litho_view.componentTree == null) {
+            litho_view.componentTree = ComponentTree.create(componentContext, createLocationComponent(location))
+                    .apply { incrementalMount(false) }
+                    .build()
         } else {
-            image_view.visibility = View.GONE
+            litho_view.setComponentAsync(createLocationComponent(location))
         }
+    }
 
-        title_text_view.text = location.name
-        if (location.distance.isNotEmpty()) {
-            title_text_view.append(" ")
-            title_text_view.append(getString(R.string.distance_holder, location.distance))
-        }
-
-        if (location.favorite) {
-            favorite_image_view.setImageResource(R.drawable.ic_favorite_selected)
-        } else {
-            favorite_image_view.setImageResource(R.drawable.ic_favorite)
-        }
-        favorite_image_view.setOnClickListener { viewModel.onFavorite(location) }
-
-        coordinates_text_view.text = Html.fromHtml(getString(R.string.coordinates_holder, location.coordinates.latitude, location.coordinates.longitude))
-        coordinates_text_view.setOnClickListener {
-            AlertDialog.Builder(requireContext())
-                    .setItems(R.array.coordinates_dialog_items, { _, index ->
-                        val locationString = "${location.coordinates.latitude},${location.coordinates.longitude}"
-                        when (index) {
-                            0 -> {
-                                val clipboardManager = requireContext().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                                clipboardManager.primaryClip = ClipData.newPlainText(location.name, locationString)
-                            }
-                            1 -> {
-                                val uri = Uri.parse("geo:$locationString")
-                                startActivity(Intent(Intent.ACTION_VIEW, uri))
-                            }
-                        }
-                    })
-                    .show()
-
-        }
-
-        if (location.date.isNotEmpty()) {
-            date_text_view.visibility = View.VISIBLE
-            date_text_view.text = getString(R.string.date_holder, location.date)
-        } else {
-            date_text_view.visibility = View.GONE
-        }
-
-        if (location.text.isNotEmpty()) {
-            description_text_view.visibility = View.VISIBLE
-            description_text_view.text = location.text
-        } else {
-            description_text_view.visibility = View.GONE
-        }
-
-        see_more_button.setOnClickListener {
-            val uri = Uri.parse("https://dodies.lv/obj/${location.url}")
-            startActivity(Intent(Intent.ACTION_VIEW, uri))
-        }
+    private fun createLocationComponent(location: Location): Component {
+        return LocationComponent.create(componentContext)
+                .location(location)
+                .favoriteListener(object : LocationComponentSpec.OnFavoriteClickListener {
+                    override fun onFavorite() {
+                        viewModel.onFavorite(location)
+                    }
+                })
+                .build()
     }
 
     override fun onStop() {
