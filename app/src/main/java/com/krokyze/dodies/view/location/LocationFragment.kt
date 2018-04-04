@@ -13,6 +13,7 @@ import com.facebook.litho.Component
 import com.facebook.litho.ComponentContext
 import com.facebook.litho.ComponentTree
 import com.krokyze.dodies.R
+import com.krokyze.dodies.lazyFast
 import com.krokyze.dodies.repository.data.Location
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -25,7 +26,12 @@ import kotlinx.android.synthetic.main.fragment_location.*
  */
 class LocationFragment : BottomSheetDialogFragment() {
 
-    private lateinit var viewModel: LocationViewModel
+    private val viewModel by lazyFast {
+        val locationId = arguments!!.getString(LOCATION_ID)
+        val factory = LocationViewModel.Factory(locationId)
+        ViewModelProviders.of(this, factory).get(locationId, LocationViewModel::class.java)
+    }
+
     private var disposable: Disposable? = null
 
     private val componentContext by lazy { ComponentContext(requireContext()) }
@@ -44,16 +50,7 @@ class LocationFragment : BottomSheetDialogFragment() {
         return inflater.inflate(R.layout.fragment_location, container, false)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        val locationId = arguments!!.getString(LOCATION_ID)
-
-        val factory = LocationViewModel.Factory(locationId)
-        viewModel = ViewModelProviders.of(this, factory).get(locationId, LocationViewModel::class.java)
-    }
-
-    override fun onStart() {
-        super.onStart()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         disposable = viewModel.getLocation()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -81,8 +78,8 @@ class LocationFragment : BottomSheetDialogFragment() {
                 .build()
     }
 
-    override fun onStop() {
-        super.onStop()
+    override fun onDestroyView() {
+        super.onDestroyView()
         disposable?.dispose()
     }
 

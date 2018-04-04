@@ -187,7 +187,7 @@ object LocationComponentSpec {
     @OnEvent(ClickEvent::class)
     @JvmStatic
     fun onSeeMoreClick(c: ComponentContext, @Prop location: Location) {
-        val uri = Uri.parse("https://dodies.lv/obj/${location.url}")
+        val uri = Uri.parse("https://dodies.lv${location.url}")
         c.startActivity(Intent(Intent.ACTION_VIEW, uri))
     }
 }

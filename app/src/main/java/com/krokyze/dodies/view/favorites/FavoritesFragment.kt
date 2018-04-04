@@ -13,6 +13,7 @@ import com.facebook.litho.sections.widget.RecyclerCollectionComponent
 import com.facebook.litho.widget.Text
 import com.facebook.yoga.YogaJustify
 import com.krokyze.dodies.R
+import com.krokyze.dodies.lazyFast
 import com.krokyze.dodies.repository.data.Location
 import com.krokyze.dodies.view.favorites.spec.FavoritesListItemSpec
 import com.krokyze.dodies.view.favorites.spec.FavoritesListSection
@@ -27,7 +28,7 @@ import kotlinx.android.synthetic.main.fragment_favorites.*
  */
 class FavoritesFragment : Fragment() {
 
-    private lateinit var viewModel: FavoritesViewModel
+    private val viewModel by lazyFast { ViewModelProviders.of(this).get(FavoritesViewModel::class.java) }
     private var disposable: Disposable? = null
 
     private val sectionContext by lazy { SectionContext(requireContext()) }
@@ -36,18 +37,12 @@ class FavoritesFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_favorites, container, false)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(FavoritesViewModel::class.java)
-    }
-
-    override fun onStart() {
-        super.onStart()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         disposable = viewModel.getLocations()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { location -> onLocations(location) }
-
     }
 
     private fun onLocations(locations: List<Location>) {
@@ -80,10 +75,8 @@ class FavoritesFragment : Fragment() {
         }
     }
 
-    override fun onStop() {
-        super.onStop()
+    override fun onDestroyView() {
+        super.onDestroyView()
         disposable?.dispose()
     }
-
-
 }

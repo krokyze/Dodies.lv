@@ -15,6 +15,7 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.clustering.ClusterManager
 import com.krokyze.dodies.R
+import com.krokyze.dodies.lazyFast
 import com.krokyze.dodies.repository.data.Location
 import com.krokyze.dodies.view.location.LocationFragment
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -26,7 +27,7 @@ import timber.log.Timber
 
 class MapFragment : Fragment(), OnMapReadyCallback {
 
-    private lateinit var viewModel: MapViewModel
+    private val viewModel by lazyFast { ViewModelProviders.of(this).get(MapViewModel::class.java) }
     private var disposable: Disposable? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -42,11 +43,6 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.about_url)))
             startActivity(intent)
         }
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(MapViewModel::class.java)
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
