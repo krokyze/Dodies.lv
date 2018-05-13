@@ -6,23 +6,22 @@ import android.arch.persistence.room.Entity
 import android.arch.persistence.room.PrimaryKey
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.clustering.ClusterItem
-import com.krokyze.dodies.repository.api.LocationResponse
+import com.krokyze.dodies.repository.api.LocationsResponse
 
 /**
  * Created by krokyze on 05/02/2018.
  */
 @Entity(tableName = "locations")
 data class Location(@PrimaryKey
-                    @ColumnInfo(name = "id") val id: String,
-                    val name: String,
-                    val type: Type,
-                    val url: String,
+                    @ColumnInfo(name = "url") val url: String,
+                    @ColumnInfo(name = "name") val name: String,
+                    @ColumnInfo(name = "type") val type: Type,
                     @Embedded val image: Image,
                     @Embedded val coordinates: Coordinates,
-                    val text: String,
-                    val status: Status,
-                    val distance: String,
-                    val date: String) : ClusterItem {
+                    @ColumnInfo(name = "text") val text: String,
+                    @ColumnInfo(name = "status") val status: Status,
+                    @ColumnInfo(name = "distance") val distance: String,
+                    @ColumnInfo(name = "date") val date: String) : ClusterItem {
 
     @ColumnInfo(name = "favorite")
     var favorite: Boolean = false
@@ -33,11 +32,11 @@ data class Location(@PrimaryKey
 
     override fun getSnippet() = text
 
-    data class Image(val small: String,
-                     val large: String)
+    data class Image(@ColumnInfo(name = "small") val small: String,
+                     @ColumnInfo(name = "large") val large: String)
 
-    data class Coordinates(val latitude: Double,
-                           val longitude: Double)
+    data class Coordinates(@ColumnInfo(name = "latitude") val latitude: Double,
+                           @ColumnInfo(name = "longitude") val longitude: Double)
 
     enum class Type(val value: String) {
         PICNIC("pikniks"),
@@ -67,10 +66,8 @@ data class Location(@PrimaryKey
 
 
     // constructor to map api location structure to db structure
-    constructor(location: LocationResponse.Location) :
-            // better than using name as primary key
-            this(id = location.geometry.coordinates.joinToString(":"),
-                    name = location.properties.name,
+    constructor(location: LocationsResponse.Location) :
+            this(name = location.properties.name,
                     type = location.properties.type.let { Type.fromString(it) },
                     url = location.properties.url,
                     image = location.properties.let { Image(it.imgSmall, it.imgLarge) },

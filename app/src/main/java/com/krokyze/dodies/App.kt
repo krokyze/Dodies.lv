@@ -8,10 +8,13 @@ import com.crashlytics.android.Crashlytics
 import com.facebook.drawee.backends.pipeline.Fresco
 import com.facebook.soloader.SoLoader
 import com.facebook.stetho.Stetho
+import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.krokyze.dodies.repository.LocationRepository
 import com.krokyze.dodies.repository.api.LocationApi
 import com.krokyze.dodies.repository.db.AppDatabase
+import com.krokyze.dodies.repository.db.Migrations
 import io.fabric.sdk.android.Fabric
+import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
@@ -42,7 +45,14 @@ class App : Application() {
             Timber.plant(CrashReportingTree())
         }
 
+        val builder = OkHttpClient.Builder()
+
+        if (BuildConfig.DEBUG) {
+            builder.addNetworkInterceptor(StethoInterceptor())
+        }
+
         val retrofit = Retrofit.Builder()
+                .client(builder.build())
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .baseUrl("https://dodies.lv/")
@@ -50,7 +60,7 @@ class App : Application() {
 
         val locationApi = retrofit.create(LocationApi::class.java)
         val appDatabase = Room.databaseBuilder(this, AppDatabase::class.java, "app-database")
-                .fallbackToDestructiveMigration()
+                .addMigrations(Migrations.Migration_1_2)
                 .build()
         val locationDao = appDatabase.locationDao()
 

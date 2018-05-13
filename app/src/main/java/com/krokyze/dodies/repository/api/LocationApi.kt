@@ -8,5 +8,5 @@ import retrofit2.http.GET
  */
 interface LocationApi {
     @GET("json/lv.geojson")
-    fun getLocations(): Observable<LocationResponse>
+    fun getLocations(): Observable<LocationsResponse>
 }

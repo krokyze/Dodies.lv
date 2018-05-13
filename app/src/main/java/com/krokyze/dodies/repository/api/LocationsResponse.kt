@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 /**
  * Created by krokyze on 05/02/2018.
  */
-data class LocationResponse(
+data class LocationsResponse(
         @SerializedName("features")
         val locations: List<Location>) {
 

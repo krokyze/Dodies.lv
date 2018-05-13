@@ -21,7 +21,7 @@ object FavoritesListSectionSpec {
         return Children.create()
                 .children(locations.map { location ->
                     SingleComponentSection.create(c)
-                            .key(location.id)
+                            .key(location.url)
                             .component(FavoritesListItem.create(c)
                                     .location(location)
                                     .listener(listener))

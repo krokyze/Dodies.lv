@@ -88,7 +88,7 @@ class LocationFragment : BottomSheetDialogFragment() {
 
         fun newInstance(location: Location): LocationFragment {
             val bundle = Bundle()
-            bundle.putString(LOCATION_ID, location.id)
+            bundle.putString(LOCATION_ID, location.url)
             return LocationFragment().apply { arguments = bundle }
         }
     }

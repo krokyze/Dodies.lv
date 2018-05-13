@@ -3,7 +3,7 @@ package com.krokyze.dodies.repository
 import android.content.res.AssetManager
 import com.google.gson.Gson
 import com.krokyze.dodies.repository.api.LocationApi
-import com.krokyze.dodies.repository.api.LocationResponse
+import com.krokyze.dodies.repository.api.LocationsResponse
 import com.krokyze.dodies.repository.data.Location
 import com.krokyze.dodies.repository.db.LocationDao
 import io.reactivex.Observable
@@ -23,7 +23,8 @@ class LocationRepository(private val locationApi: LocationApi,
                 .debounce(400, TimeUnit.MILLISECONDS)
     }
 
-    fun getLocation(name: String) = locationDao.getLocation(name)
+    fun getLocation(url: String) = locationDao.getLocation(url)
+
 
     fun getFavoriteLocations() = locationDao.getFavoriteLocations()
 
@@ -65,7 +66,7 @@ class LocationRepository(private val locationApi: LocationApi,
         return Observable.just(assetManager.open("locations.json")
                 .reader()
                 .use { reader ->
-                    Gson().fromJson(reader, LocationResponse::class.java)
+                    Gson().fromJson(reader, LocationsResponse::class.java)
                             .locations.map { Location(it) }
                 })
                 .doOnNext {
@@ -79,17 +80,17 @@ class LocationRepository(private val locationApi: LocationApi,
                 .first(emptyList())
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
-                .map { it.map { it.id } }
+                .map { it.map { it.url } }
                 .subscribe { favoriteIds ->
                     // save favorite information
                     favoriteIds.forEach { favoriteId ->
-                        locations.firstOrNull { it.id == favoriteId }
+                        locations.firstOrNull { it.url == favoriteId }
                                 ?.favorite = true
                     }
 
                     locationDao.deleteAll()
                     locationDao.insertAll(locations)
-                    Timber.d("Inserted ${locations.size} locations from in DB...")
+                    Timber.d("Inserted ${locations.size} locations in DB...")
                 }
     }
 

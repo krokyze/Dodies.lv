@@ -9,19 +9,19 @@ import com.krokyze.dodies.repository.data.Location
 /**
  * Created by krokyze on 05/02/2018.
  */
-class LocationViewModel(private val locationId: String) : ViewModel() {
+class LocationViewModel(private val locationUrl: String) : ViewModel() {
 
     private val locationRepository: LocationRepository by lazy { App.locationRepository }
 
-    fun getLocation() = locationRepository.getLocation(locationId)
+    fun getLocation() = locationRepository.getLocation(locationUrl)
 
     fun onFavorite(location: Location) {
         location.favorite = !location.favorite
         locationRepository.update(location)
     }
 
-    class Factory(private val locationId: String) : ViewModelProvider.Factory {
+    class Factory(private val locationUrl: String) : ViewModelProvider.Factory {
         override fun <T : ViewModel?> create(modelClass: Class<T>): T =
-                LocationViewModel(locationId) as T
+                LocationViewModel(locationUrl) as T
     }
 }
