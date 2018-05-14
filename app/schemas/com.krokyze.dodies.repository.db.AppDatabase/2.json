@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 2,
-    "identityHash": "7aaefc38af5ecb398e6f02c67d2580f0",
+    "identityHash": "33209dcb6f7ba0013d86a67b05b83536",
     "entities": [
       {
         "tableName": "locations",
@@ -93,7 +93,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"7aaefc38af5ecb398e6f02c67d2580f0\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"33209dcb6f7ba0013d86a67b05b83536\")"
     ]
   }
 }
