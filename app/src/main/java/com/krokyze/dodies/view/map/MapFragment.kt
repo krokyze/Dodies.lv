@@ -73,6 +73,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                 .subscribe({
                     clusterManager.clearItems()
                     clusterManager.addItems(it)
+                    clusterManager.cluster()
                 }, {
                     Timber.w(it)
                     // don't show any error, cause db is already filled with items

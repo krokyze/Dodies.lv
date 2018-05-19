@@ -9,11 +9,14 @@ import android.support.design.widget.BottomSheetDialogFragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.facebook.litho.Component
 import com.facebook.litho.ComponentContext
 import com.facebook.litho.ComponentTree
 import com.krokyze.dodies.R
 import com.krokyze.dodies.lazyFast
+import com.krokyze.dodies.repository.api.LocationExtra
+import com.krokyze.dodies.repository.api.NetworkRequest
 import com.krokyze.dodies.repository.data.Location
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -27,9 +30,9 @@ import kotlinx.android.synthetic.main.fragment_location.*
 class LocationFragment : BottomSheetDialogFragment() {
 
     private val viewModel by lazyFast {
-        val locationId = arguments!!.getString(LOCATION_ID)
-        val factory = LocationViewModel.Factory(locationId)
-        ViewModelProviders.of(this, factory).get(locationId, LocationViewModel::class.java)
+        val locationUrl = arguments!!.getString(LOCATION_URL)
+        val factory = LocationViewModel.Factory(locationUrl)
+        ViewModelProviders.of(this, factory).get(locationUrl, LocationViewModel::class.java)
     }
 
     private var disposable: Disposable? = null
@@ -54,25 +57,38 @@ class LocationFragment : BottomSheetDialogFragment() {
         disposable = viewModel.getLocation()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { location -> onLocation(location) }
+                .subscribe { (location, locationExtra) ->
+                    if (locationExtra is NetworkRequest.Failure) {
+                        Toast.makeText(requireContext(), R.string.network_error, Toast.LENGTH_SHORT).show()
+                    }
+
+                    onLocation(location, locationExtra)
+                }
     }
 
-    private fun onLocation(location: Location) {
+    private fun onLocation(location: Location, locationExtra: NetworkRequest<LocationExtra>) {
+        // fixes disappearing layout on rotation
         if (litho_view.componentTree == null) {
-            litho_view.componentTree = ComponentTree.create(componentContext, createLocationComponent(location))
+            litho_view.componentTree = ComponentTree.create(componentContext, createLocationComponent(location, locationExtra))
                     .apply { incrementalMount(false) }
                     .build()
         } else {
-            litho_view.setComponentAsync(createLocationComponent(location))
+            litho_view.setComponentAsync(createLocationComponent(location, locationExtra))
         }
     }
 
-    private fun createLocationComponent(location: Location): Component {
+    private fun createLocationComponent(location: Location, locationExtra: NetworkRequest<LocationExtra>): Component {
         return LocationComponent.create(componentContext)
                 .location(location)
-                .favoriteListener(object : LocationComponentSpec.OnFavoriteClickListener {
+                .locationExtra(locationExtra)
+                .onFavoriteClickListener(object : LocationComponentSpec.OnFavoriteClickListener {
                     override fun onFavorite() {
                         viewModel.onFavorite(location)
+                    }
+                })
+                .onSeeMoreClickListener(object  : LocationComponentSpec.OnSeeMoreClickListener {
+                    override fun onSeeMore() {
+                        viewModel.onSeeMore()
                     }
                 })
                 .build()
@@ -84,11 +100,11 @@ class LocationFragment : BottomSheetDialogFragment() {
     }
 
     companion object {
-        private const val LOCATION_ID = "location_id"
+        private const val LOCATION_URL = "location_url"
 
         fun newInstance(location: Location): LocationFragment {
             val bundle = Bundle()
-            bundle.putString(LOCATION_ID, location.url)
+            bundle.putString(LOCATION_URL, location.url)
             return LocationFragment().apply { arguments = bundle }
         }
     }

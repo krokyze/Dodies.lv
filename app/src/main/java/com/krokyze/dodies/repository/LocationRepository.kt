@@ -25,6 +25,7 @@ class LocationRepository(private val locationApi: LocationApi,
 
     fun getLocation(url: String) = locationDao.getLocation(url)
 
+    fun getLocationExtra(url: String) = locationApi.getLocationExtra(url)
 
     fun getFavoriteLocations() = locationDao.getFavoriteLocations()
 

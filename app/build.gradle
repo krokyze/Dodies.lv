@@ -16,7 +16,7 @@ android {
         applicationId "com.krokyze.dodies"
         minSdkVersion 21
         targetSdkVersion 27
-        versionCode 5
+        versionCode 6
         versionName "1.0"
         multiDexEnabled true
 
@@ -73,7 +73,7 @@ dependencies {
     kapt "com.facebook.litho:litho-sections-processor:$litho_version"
 
     // Litho - SoLoader
-    implementation 'com.facebook.soloader:soloader:0.3.0'
+    implementation 'com.facebook.soloader:soloader:0.4.1'
 
     implementation 'com.google.android.gms:play-services-maps:15.0.1'
     implementation 'com.google.maps.android:android-maps-utils:0.5+'

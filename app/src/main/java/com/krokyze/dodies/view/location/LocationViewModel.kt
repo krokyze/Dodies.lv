@@ -4,7 +4,15 @@ import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
 import com.krokyze.dodies.App
 import com.krokyze.dodies.repository.LocationRepository
+import com.krokyze.dodies.repository.api.LocationExtra
+import com.krokyze.dodies.repository.api.NetworkRequest
 import com.krokyze.dodies.repository.data.Location
+import io.reactivex.BackpressureStrategy
+import io.reactivex.Flowable
+import io.reactivex.disposables.Disposable
+import io.reactivex.rxkotlin.Flowables
+import io.reactivex.schedulers.Schedulers
+import io.reactivex.subjects.BehaviorSubject
 
 /**
  * Created by krokyze on 05/02/2018.
@@ -12,12 +20,38 @@ import com.krokyze.dodies.repository.data.Location
 class LocationViewModel(private val locationUrl: String) : ViewModel() {
 
     private val locationRepository: LocationRepository by lazy { App.locationRepository }
+    private val locationExtra = BehaviorSubject.create<NetworkRequest<LocationExtra>>()
 
-    fun getLocation() = locationRepository.getLocation(locationUrl)
+    private var disposable: Disposable? = null
+
+    fun getLocation(): Flowable<Pair<Location, NetworkRequest<LocationExtra>>> {
+        onSeeMore()
+        return Flowables.combineLatest(locationRepository.getLocation(locationUrl), locationExtra.toFlowable(BackpressureStrategy.LATEST))
+    }
+
+    fun onSeeMore() {
+        locationExtra.onNext(NetworkRequest.loading(true))
+
+        disposable?.dispose()
+        disposable = locationRepository.getLocationExtra(locationUrl)
+                .subscribeOn(Schedulers.io())
+                .subscribe({ response ->
+                    locationExtra.onNext(NetworkRequest.success(response))
+                }, { error ->
+                    locationExtra.onNext(NetworkRequest.failure(error))
+                })
+
+
+    }
 
     fun onFavorite(location: Location) {
         location.favorite = !location.favorite
         locationRepository.update(location)
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        disposable?.dispose()
     }
 
     class Factory(private val locationUrl: String) : ViewModelProvider.Factory {
