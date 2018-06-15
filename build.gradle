@@ -7,6 +7,7 @@ buildscript {
     ext.retrofit_version = '2.4.0'
     // verify 1-2 migration before upgrading
     ext.room_version = '1.0.0'
+    ext.koin_version = '0.9.3'
 
     repositories {
         maven { url 'https://maven.fabric.io/public' }

@@ -16,7 +16,7 @@ android {
         applicationId "com.krokyze.dodies"
         minSdkVersion 21
         targetSdkVersion 27
-        versionCode 6
+        versionCode 7
         versionName "1.0"
         multiDexEnabled true
 
@@ -56,6 +56,10 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation "com.android.support:appcompat-v7:$support_version"
     implementation "com.android.support:design:$support_version"
+
+    // Koin
+    compile "org.koin:koin-core:$koin_version"
+    compile "org.koin:koin-android-architecture:$koin_version"
 
     // Litho - Core
     implementation "com.facebook.litho:litho-core:$litho_version"

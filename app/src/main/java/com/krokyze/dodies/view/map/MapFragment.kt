@@ -1,6 +1,5 @@
 package com.krokyze.dodies.view.map
 
-import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -15,19 +14,19 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.clustering.ClusterManager
 import com.krokyze.dodies.R
-import com.krokyze.dodies.lazyFast
 import com.krokyze.dodies.repository.data.Location
 import com.krokyze.dodies.view.location.LocationFragment
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_map.*
+import org.koin.android.architecture.ext.viewModel
 import timber.log.Timber
 
 
 class MapFragment : Fragment(), OnMapReadyCallback {
 
-    private val viewModel by lazyFast { ViewModelProviders.of(this).get(MapViewModel::class.java) }
+    private val viewModel by viewModel<MapViewModel>()
     private var disposable: Disposable? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {

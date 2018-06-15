@@ -1,6 +1,5 @@
 package com.krokyze.dodies.view.favorites
 
-import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.text.Layout
@@ -13,7 +12,6 @@ import com.facebook.litho.sections.widget.RecyclerCollectionComponent
 import com.facebook.litho.widget.Text
 import com.facebook.yoga.YogaJustify
 import com.krokyze.dodies.R
-import com.krokyze.dodies.lazyFast
 import com.krokyze.dodies.repository.data.Location
 import com.krokyze.dodies.view.favorites.spec.FavoritesListItemSpec
 import com.krokyze.dodies.view.favorites.spec.FavoritesListSection
@@ -22,13 +20,14 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_favorites.*
+import org.koin.android.architecture.ext.viewModel
 
 /**
  * Created by krokyze on 05/02/2018.
  */
 class FavoritesFragment : Fragment() {
 
-    private val viewModel by lazyFast { ViewModelProviders.of(this).get(FavoritesViewModel::class.java) }
+    private val viewModel by viewModel<FavoritesViewModel>()
     private var disposable: Disposable? = null
 
     private val sectionContext by lazy { SectionContext(requireContext()) }

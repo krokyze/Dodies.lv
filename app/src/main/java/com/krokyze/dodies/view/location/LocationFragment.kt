@@ -1,7 +1,6 @@
 package com.krokyze.dodies.view.location
 
 import android.app.Dialog
-import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.design.widget.BottomSheetBehavior
 import android.support.design.widget.BottomSheetDialog
@@ -14,7 +13,6 @@ import com.facebook.litho.Component
 import com.facebook.litho.ComponentContext
 import com.facebook.litho.ComponentTree
 import com.krokyze.dodies.R
-import com.krokyze.dodies.lazyFast
 import com.krokyze.dodies.repository.api.LocationExtra
 import com.krokyze.dodies.repository.api.NetworkRequest
 import com.krokyze.dodies.repository.data.Location
@@ -22,6 +20,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_location.*
+import org.koin.android.architecture.ext.viewModel
 
 
 /**
@@ -29,11 +28,8 @@ import kotlinx.android.synthetic.main.fragment_location.*
  */
 class LocationFragment : BottomSheetDialogFragment() {
 
-    private val viewModel by lazyFast {
-        val locationUrl = arguments!!.getString(LOCATION_URL)
-        val factory = LocationViewModel.Factory(locationUrl)
-        ViewModelProviders.of(this, factory).get(locationUrl, LocationViewModel::class.java)
-    }
+    private val locationUrl by lazy { arguments!!.getString(LOCATION_URL) }
+    private val viewModel by viewModel<LocationViewModel> { mapOf("url" to locationUrl) }
 
     private var disposable: Disposable? = null
 
@@ -86,7 +82,7 @@ class LocationFragment : BottomSheetDialogFragment() {
                         viewModel.onFavorite(location)
                     }
                 })
-                .onSeeMoreClickListener(object  : LocationComponentSpec.OnSeeMoreClickListener {
+                .onSeeMoreClickListener(object : LocationComponentSpec.OnSeeMoreClickListener {
                     override fun onSeeMore() {
                         viewModel.onSeeMore()
                     }

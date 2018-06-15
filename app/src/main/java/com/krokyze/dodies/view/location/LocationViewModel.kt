@@ -1,8 +1,6 @@
 package com.krokyze.dodies.view.location
 
 import android.arch.lifecycle.ViewModel
-import android.arch.lifecycle.ViewModelProvider
-import com.krokyze.dodies.App
 import com.krokyze.dodies.repository.LocationRepository
 import com.krokyze.dodies.repository.api.LocationExtra
 import com.krokyze.dodies.repository.api.NetworkRequest
@@ -17,9 +15,9 @@ import io.reactivex.subjects.BehaviorSubject
 /**
  * Created by krokyze on 05/02/2018.
  */
-class LocationViewModel(private val locationUrl: String) : ViewModel() {
+class LocationViewModel(private val locationUrl: String,
+                        private val locationRepository: LocationRepository) : ViewModel() {
 
-    private val locationRepository: LocationRepository by lazy { App.locationRepository }
     private val locationExtra = BehaviorSubject.create<NetworkRequest<LocationExtra>>()
 
     private var disposable: Disposable? = null
@@ -52,10 +50,5 @@ class LocationViewModel(private val locationUrl: String) : ViewModel() {
     override fun onCleared() {
         super.onCleared()
         disposable?.dispose()
-    }
-
-    class Factory(private val locationUrl: String) : ViewModelProvider.Factory {
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T =
-                LocationViewModel(locationUrl) as T
     }
 }
