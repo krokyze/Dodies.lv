@@ -48,10 +48,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap) {
         val clusterManager = ClusterManager<Location>(requireContext(), googleMap)
         clusterManager.renderer = ClusterRenderer(requireContext(), googleMap, clusterManager)
-        clusterManager.setOnClusterItemInfoWindowClickListener { location ->
-            LocationFragment.newInstance(location)
-                    .show(childFragmentManager, null)
-        }
+        clusterManager.setOnClusterItemInfoWindowClickListener(::openLocation)
 
         googleMap.setOnCameraIdleListener(clusterManager)
         googleMap.setOnMarkerClickListener(clusterManager)
@@ -74,10 +71,28 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                     clusterManager.clearItems()
                     clusterManager.addItems(it)
                     clusterManager.cluster()
+
+                    search_view.setLocations(it)
+                    search_view.onLocationListener = { location ->
+                        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(location.position, 10f), object : GoogleMap.CancelableCallback {
+                            override fun onCancel() {
+                                openLocation(location)
+                            }
+
+                            override fun onFinish() {
+                                openLocation(location)
+                            }
+                        })
+                    }
                 }, {
                     Timber.w(it)
                     // don't show any error, cause db is already filled with items
                 })
+    }
+
+    private fun openLocation(location: Location) {
+        LocationFragment.newInstance(location)
+                .show(childFragmentManager, null)
     }
 
     override fun onDestroy() {

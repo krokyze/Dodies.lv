@@ -17,6 +17,7 @@
     <string name="favorites_empty">Dotajā brīdī Jums nav neviena favorīta.</string>
     <string name="network_error">Neizdevās ielādēt vairāk, lūdzu pārbaudiet interneta savienojumu.</string>
     <string name="share">Dalīties</string>
+    <string name="search">Meklēt</string>
 
     <string name="about_url">https://dodies.lv/lv/par/</string>
 </resources>
