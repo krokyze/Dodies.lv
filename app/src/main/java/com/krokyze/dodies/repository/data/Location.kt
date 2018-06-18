@@ -12,16 +12,18 @@ import com.krokyze.dodies.repository.api.LocationsResponse
  * Created by krokyze on 05/02/2018.
  */
 @Entity(tableName = "locations")
-data class Location(@PrimaryKey
-                    @ColumnInfo(name = "url") val url: String,
-                    @ColumnInfo(name = "name") val name: String,
-                    @ColumnInfo(name = "type") val type: Type,
-                    @Embedded val image: Image,
-                    @Embedded val coordinates: Coordinates,
-                    @ColumnInfo(name = "text") val text: String,
-                    @ColumnInfo(name = "status") val status: Status,
-                    @ColumnInfo(name = "distance") val distance: String,
-                    @ColumnInfo(name = "date") val date: String) : ClusterItem {
+data class Location(
+    @PrimaryKey
+    @ColumnInfo(name = "url") val url: String,
+    @ColumnInfo(name = "name") val name: String,
+    @ColumnInfo(name = "type") val type: Type,
+    @Embedded val image: Image,
+    @Embedded val coordinates: Coordinates,
+    @ColumnInfo(name = "text") val text: String,
+    @ColumnInfo(name = "status") val status: Status,
+    @ColumnInfo(name = "distance") val distance: String,
+    @ColumnInfo(name = "date") val date: String
+) : ClusterItem {
 
     @ColumnInfo(name = "favorite")
     var favorite: Boolean = false
@@ -32,11 +34,15 @@ data class Location(@PrimaryKey
 
     override fun getSnippet() = text
 
-    data class Image(@ColumnInfo(name = "small") val small: String,
-                     @ColumnInfo(name = "large") val large: String)
+    data class Image(
+        @ColumnInfo(name = "small") val small: String,
+        @ColumnInfo(name = "large") val large: String
+    )
 
-    data class Coordinates(@ColumnInfo(name = "latitude") val latitude: Double,
-                           @ColumnInfo(name = "longitude") val longitude: Double)
+    data class Coordinates(
+        @ColumnInfo(name = "latitude") val latitude: Double,
+        @ColumnInfo(name = "longitude") val longitude: Double
+    )
 
     enum class Type(val value: String) {
         PICNIC("pikniks"),
@@ -63,7 +69,6 @@ data class Location(@PrimaryKey
             }
         }
     }
-
 
     // constructor to map api location structure to db structure
     constructor(location: LocationsResponse.Location) :

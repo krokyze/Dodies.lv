@@ -14,9 +14,11 @@ import java.util.concurrent.TimeUnit
 /**
  * Created by krokyze on 05/02/2018.
  */
-class LocationRepository(private val locationApi: LocationApi,
-                         private val locationDao: LocationDao,
-                         private val assetManager: AssetManager) {
+class LocationRepository(
+    private val locationApi: LocationApi,
+    private val locationDao: LocationDao,
+    private val assetManager: AssetManager
+) {
 
     fun getLocations(): Observable<List<Location>> {
         return Observable.concatArrayEager(getLocationsFromDb(), getLocationsFromApi())
@@ -94,6 +96,4 @@ class LocationRepository(private val locationApi: LocationApi,
                     Timber.d("Inserted ${locations.size} locations in DB...")
                 }
     }
-
-
 }

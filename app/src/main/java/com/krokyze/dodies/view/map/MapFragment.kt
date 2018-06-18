@@ -23,7 +23,6 @@ import kotlinx.android.synthetic.main.fragment_map.*
 import org.koin.android.architecture.ext.viewModel
 import timber.log.Timber
 
-
 class MapFragment : Fragment(), OnMapReadyCallback {
 
     private val viewModel by viewModel<MapViewModel>()

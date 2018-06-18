@@ -3,7 +3,12 @@ package com.krokyze.dodies.view.favorites.spec
 import android.text.TextUtils
 import com.facebook.drawee.backends.pipeline.Fresco
 import com.facebook.drawee.drawable.ScalingUtils
-import com.facebook.litho.*
+import com.facebook.litho.Border
+import com.facebook.litho.ClickEvent
+import com.facebook.litho.Column
+import com.facebook.litho.Component
+import com.facebook.litho.ComponentContext
+import com.facebook.litho.Row
 import com.facebook.litho.annotations.LayoutSpec
 import com.facebook.litho.annotations.OnCreateLayout
 import com.facebook.litho.annotations.OnEvent
@@ -15,7 +20,6 @@ import com.facebook.yoga.YogaAlign
 import com.facebook.yoga.YogaEdge
 import com.krokyze.dodies.R
 import com.krokyze.dodies.repository.data.Location
-
 
 /**
  * Created by krokyze on 13/03/2018.
@@ -104,6 +108,5 @@ object FavoritesListItemSpec {
                 .colorRes(R.color.divider)
                 .paddingDip(YogaEdge.START, if (location.image.small.isEmpty()) 16f else 104f)
                 .paddingDip(YogaEdge.END, 16f)
-
     }
 }

@@ -12,7 +12,6 @@ import com.facebook.litho.widget.LinearLayoutInfo
 import com.facebook.litho.widget.Recycler
 import com.facebook.litho.widget.RecyclerBinder
 
-
 @LayoutSpec
 object ImageViewPagerSpec {
 
@@ -43,5 +42,4 @@ object ImageViewPagerSpec {
                 .nestedScrollingEnabled(false)
                 .build()
     }
-
 }

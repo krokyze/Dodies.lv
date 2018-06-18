@@ -36,6 +36,5 @@ class MainActivity : AppCompatActivity() {
                 else -> throw IllegalStateException("there should be only 2 fragments")
             }
         }
-
     }
 }

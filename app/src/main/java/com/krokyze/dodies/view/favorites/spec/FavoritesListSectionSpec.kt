@@ -8,7 +8,6 @@ import com.facebook.litho.sections.annotations.OnCreateChildren
 import com.facebook.litho.sections.common.SingleComponentSection
 import com.krokyze.dodies.repository.data.Location
 
-
 /**
  * Created by krokyze on 14/03/2018.
  */

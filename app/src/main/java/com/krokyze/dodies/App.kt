@@ -14,7 +14,6 @@ import org.koin.android.ext.android.startKoin
 import timber.log.Timber
 import timber.log.Timber.DebugTree
 
-
 /**
  * Created by krokyze on 05/02/2018.
  */
@@ -53,6 +52,4 @@ class App : Application() {
             }
         }
     }
-
-
 }

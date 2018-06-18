@@ -8,7 +8,12 @@ import android.net.Uri
 import android.support.v7.app.AlertDialog
 import android.text.Html
 import android.text.Layout
-import com.facebook.litho.*
+import com.facebook.litho.Border
+import com.facebook.litho.ClickEvent
+import com.facebook.litho.Column
+import com.facebook.litho.Component
+import com.facebook.litho.ComponentContext
+import com.facebook.litho.Row
 import com.facebook.litho.annotations.LayoutSpec
 import com.facebook.litho.annotations.OnCreateLayout
 import com.facebook.litho.annotations.OnEvent
@@ -24,7 +29,6 @@ import com.krokyze.dodies.R
 import com.krokyze.dodies.repository.api.LocationExtra
 import com.krokyze.dodies.repository.api.NetworkRequest
 import com.krokyze.dodies.repository.data.Location
-
 
 /**
  * Created by krokyze on 13/03/2018.

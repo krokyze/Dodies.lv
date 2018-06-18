@@ -10,7 +10,6 @@ import com.facebook.litho.annotations.Prop
 import com.facebook.litho.fresco.FrescoImage
 import com.krokyze.dodies.R
 
-
 @LayoutSpec
 object ImageItemSpec {
 
@@ -31,5 +30,4 @@ object ImageItemSpec {
                 .retryImageRes(R.drawable.ic_refresh)
                 .build()
     }
-
 }

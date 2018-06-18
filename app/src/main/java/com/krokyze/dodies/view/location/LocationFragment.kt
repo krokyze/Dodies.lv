@@ -22,7 +22,6 @@ import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_location.*
 import org.koin.android.architecture.ext.viewModel
 
-
 /**
  * Created by krokyze on 05/02/2018.
  */

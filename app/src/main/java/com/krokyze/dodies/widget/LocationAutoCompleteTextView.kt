@@ -105,7 +105,6 @@ class LocationAutoCompleteTextView(context: Context, attrs: AttributeSet) : AppC
                             values = items
                             count = items.size
                         }
-
                     }
                 }
 

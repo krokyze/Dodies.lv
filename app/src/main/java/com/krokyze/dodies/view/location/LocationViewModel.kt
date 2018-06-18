@@ -15,8 +15,10 @@ import io.reactivex.subjects.BehaviorSubject
 /**
  * Created by krokyze on 05/02/2018.
  */
-class LocationViewModel(private val locationUrl: String,
-                        private val locationRepository: LocationRepository) : ViewModel() {
+class LocationViewModel(
+    private val locationUrl: String,
+    private val locationRepository: LocationRepository
+) : ViewModel() {
 
     private val locationExtra = BehaviorSubject.create<NetworkRequest<LocationExtra>>()
 
@@ -38,8 +40,6 @@ class LocationViewModel(private val locationUrl: String,
                 }, { error ->
                     locationExtra.onNext(NetworkRequest.failure(error))
                 })
-
-
     }
 
     fun onFavorite(location: Location) {

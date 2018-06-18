@@ -17,13 +17,14 @@ import com.krokyze.dodies.R
 import com.krokyze.dodies.repository.data.Location
 import kotlinx.android.synthetic.main.cluster_item_view.view.*
 
-
 /**
  * Created by krokyze on 05/02/2018.
  */
-class ClusterRenderer(context: Context,
-                      googleMap: GoogleMap,
-                      clusterManager: ClusterManager<Location>) : DefaultClusterRenderer<Location>(context, googleMap, clusterManager) {
+class ClusterRenderer(
+    context: Context,
+    googleMap: GoogleMap,
+    clusterManager: ClusterManager<Location>
+) : DefaultClusterRenderer<Location>(context, googleMap, clusterManager) {
 
     private val cache: LruCache<String, BitmapDescriptor> by lazy { LruCache<String, BitmapDescriptor>((Runtime.getRuntime().maxMemory() / 1024 / 8).toInt()) }
 

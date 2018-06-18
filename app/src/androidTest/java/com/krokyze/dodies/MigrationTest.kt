@@ -11,10 +11,9 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import java.io.IOException
 
-
 @RunWith(AndroidJUnit4::class)
 class MigrationTest {
-    
+
     @Rule
     @JvmField
     val helper: MigrationTestHelper = MigrationTestHelper(
@@ -37,5 +36,3 @@ class MigrationTest {
         const val TEST_DB = "migration-test"
     }
 }
-
-
