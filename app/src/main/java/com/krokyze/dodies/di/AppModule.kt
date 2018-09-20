@@ -11,16 +11,16 @@ import com.krokyze.dodies.repository.db.LocationDao
 import com.krokyze.dodies.repository.db.Migrations
 import okhttp3.OkHttpClient
 import org.koin.android.ext.koin.androidApplication
-import org.koin.dsl.module.applicationContext
+import org.koin.dsl.module.module
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 
-val appModule = applicationContext {
-    bean { createOkHttpClient() }
-    bean { createLocationApi(get()) }
-    bean { createLocationDao(get()) }
-    bean { createLocationRepository(get(), get(), androidApplication()) }
+val appModule = module {
+    single { createOkHttpClient() }
+    single { createLocationApi(get()) }
+    single { createLocationDao(get()) }
+    single { createLocationRepository(get(), get(), androidApplication()) }
 }
 
 private fun createOkHttpClient(): OkHttpClient {

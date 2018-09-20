@@ -20,7 +20,8 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_location.*
-import org.koin.android.architecture.ext.viewModel
+import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 
 /**
  * Created by krokyze on 05/02/2018.
@@ -28,7 +29,7 @@ import org.koin.android.architecture.ext.viewModel
 class LocationFragment : BottomSheetDialogFragment() {
 
     private val locationUrl by lazy { arguments!!.getString(LOCATION_URL) }
-    private val viewModel by viewModel<LocationViewModel> { mapOf("url" to locationUrl) }
+    private val viewModel by viewModel<LocationViewModel> { parametersOf(locationUrl) }
 
     private var disposable: Disposable? = null
 
