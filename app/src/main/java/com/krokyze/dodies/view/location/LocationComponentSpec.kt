@@ -129,7 +129,7 @@ object LocationComponentSpec {
                 )
                 .child(
                         Text.create(c, 0, R.style.TextAppearance_AppCompat_Body1)
-                                .text(listOf(location.coordinates.latitude, location.coordinates.longitude).joinToString())
+                                .text(listOf(location.coordinates.latitude, location.coordinates.longitude).joinToString { it.toString().take(10) })
                                 .textColorRes(R.color.colorPrimary)
                                 .clickHandler(LocationComponent.onCoordinatesClick(c))
                                 .marginDip(YogaEdge.START, 4f)

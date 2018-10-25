@@ -1,14 +1,10 @@
 package com.krokyze.dodies.view.favorites.spec
 
+import android.text.Html
 import android.text.TextUtils
 import com.facebook.drawee.backends.pipeline.Fresco
 import com.facebook.drawee.drawable.ScalingUtils
-import com.facebook.litho.Border
-import com.facebook.litho.ClickEvent
-import com.facebook.litho.Column
-import com.facebook.litho.Component
-import com.facebook.litho.ComponentContext
-import com.facebook.litho.Row
+import com.facebook.litho.*
 import com.facebook.litho.annotations.LayoutSpec
 import com.facebook.litho.annotations.OnCreateLayout
 import com.facebook.litho.annotations.OnEvent
@@ -34,18 +30,17 @@ object FavoritesListItemSpec {
                 .child(Row.create(c)
                         .alignItems(YogaAlign.CENTER)
                         .border(Border.create(c)
-                                .widthDip(YogaEdge.START, 16)
-                                .widthDip(YogaEdge.TOP, 8)
-                                .widthDip(YogaEdge.END, 16)
-                                .widthDip(YogaEdge.BOTTOM, 8)
+                                .widthDip(YogaEdge.VERTICAL, 8)
+                                .widthDip(YogaEdge.HORIZONTAL, 16)
                                 .build())
                         .child(createImage(c, location)?.marginDip(YogaEdge.END, 16f))
                         .child(Column.create(c)
-                                .flexGrow(1f)
                                 .child(createTitle(c, location))
                                 .child(createDescription(c, location)))
                         .clickHandler(FavoritesListItem.onLocationClick(c)))
-                .child(createSeparator(c, location))
+                .child(createSeparator(c)
+                        .paddingDip(YogaEdge.START, if (location.image.small.isEmpty()) 16f else 104f)
+                        .paddingDip(YogaEdge.END, 16f))
                 .build()
     }
 
@@ -95,18 +90,15 @@ object FavoritesListItemSpec {
 
     private fun createDescription(c: ComponentContext, location: Location): Text.Builder {
         return Text.create(c, 0, R.style.TextAppearance_AppCompat_Body1)
-                .text(location.text)
+                .text(Html.fromHtml(location.text))
                 .textColorRes(R.color.secondary_text)
                 .maxLines(2)
                 .ellipsize(TextUtils.TruncateAt.END)
     }
 
-    private fun createSeparator(c: ComponentContext, location: Location): SolidColor.Builder {
+    private fun createSeparator(c: ComponentContext): SolidColor.Builder {
         return SolidColor.create(c)
-                .heightDip(1f)
-                .flexGrow(1f)
                 .colorRes(R.color.divider)
-                .paddingDip(YogaEdge.START, if (location.image.small.isEmpty()) 16f else 104f)
-                .paddingDip(YogaEdge.END, 16f)
+                .heightDip(1f)
     }
 }

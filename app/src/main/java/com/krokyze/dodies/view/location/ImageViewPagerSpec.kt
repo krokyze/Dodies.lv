@@ -6,10 +6,11 @@ import com.facebook.litho.ComponentContext
 import com.facebook.litho.annotations.LayoutSpec
 import com.facebook.litho.annotations.OnCreateLayout
 import com.facebook.litho.annotations.Prop
-import com.facebook.litho.widget.ComponentRenderInfo
-import com.facebook.litho.widget.LinearLayoutInfo
-import com.facebook.litho.widget.Recycler
-import com.facebook.litho.widget.RecyclerBinder
+import com.facebook.litho.sections.SectionContext
+import com.facebook.litho.sections.widget.ListRecyclerConfiguration
+import com.facebook.litho.sections.widget.RecyclerBinderConfiguration
+import com.facebook.litho.sections.widget.RecyclerCollectionComponent
+import com.facebook.litho.widget.SnapUtil
 
 @LayoutSpec
 object ImageViewPagerSpec {
@@ -17,29 +18,27 @@ object ImageViewPagerSpec {
     @OnCreateLayout
     @JvmStatic
     fun onCreateLayout(c: ComponentContext, @Prop images: List<String>): Component {
-        val recyclerBinder = RecyclerBinder.Builder()
-                .layoutInfo(LinearLayoutInfo(c, OrientationHelper.HORIZONTAL, false))
-                .isCircular(true)
-                .build(c)
-
-        recyclerBinder.insertRangeAt(0, images
-                .map { image ->
-                    ImageItem.create(c)
-                            .image(image)
-                            .build()
-                }
-                .map { imageItem ->
-                    ComponentRenderInfo.create()
-                            .component(imageItem)
-                            .build()
-                })
-
-        return Recycler.create(c)
+        return RecyclerCollectionComponent.create(c)
                 .aspectRatio(16f / 9f)
-                // TODO
-                // .snapHelper(PagerSnapHelper())
-                .binder(recyclerBinder)
+                .section(
+                        ImageViewPagerSection.create(SectionContext(c))
+                                .images(images)
+                                .build()
+                )
+                .recyclerConfiguration(
+                        ListRecyclerConfiguration.create()
+                                .orientation(OrientationHelper.HORIZONTAL)
+                                .snapMode(SnapUtil.SNAP_TO_CENTER)
+                                .recyclerBinderConfiguration(
+                                        RecyclerBinderConfiguration.create()
+                                                .isCircular(true)
+                                                .build()
+                                )
+                                .build()
+                )
                 .nestedScrollingEnabled(false)
+                .clipToPadding(false)
+                .disablePTR(true)
                 .build()
     }
 }
