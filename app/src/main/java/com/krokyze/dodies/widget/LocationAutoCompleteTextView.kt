@@ -2,7 +2,6 @@ package com.krokyze.dodies.widget
 
 import android.content.Context
 import android.graphics.Rect
-import android.support.v7.widget.AppCompatAutoCompleteTextView
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +10,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.BaseAdapter
 import android.widget.Filter
 import android.widget.Filterable
+import androidx.appcompat.widget.AppCompatAutoCompleteTextView
 import com.krokyze.dodies.R
 import com.krokyze.dodies.repository.data.Location
 import kotlinx.android.synthetic.main.location_auto_complete_list_item.view.*

@@ -5,15 +5,10 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.support.v7.app.AlertDialog
 import android.text.Html
 import android.text.Layout
-import com.facebook.litho.Border
-import com.facebook.litho.ClickEvent
-import com.facebook.litho.Column
-import com.facebook.litho.Component
-import com.facebook.litho.ComponentContext
-import com.facebook.litho.Row
+import androidx.appcompat.app.AlertDialog
+import com.facebook.litho.*
 import com.facebook.litho.annotations.LayoutSpec
 import com.facebook.litho.annotations.OnCreateLayout
 import com.facebook.litho.annotations.OnEvent
@@ -145,7 +140,7 @@ object LocationComponentSpec {
     @JvmStatic
     fun onCoordinatesClick(c: ComponentContext, @Prop location: Location) {
         AlertDialog.Builder(c)
-                .setItems(R.array.coordinates_dialog_items, { _, index ->
+                .setItems(R.array.coordinates_dialog_items) { _, index ->
                     val locationString = "${location.coordinates.latitude},${location.coordinates.longitude}"
                     when (index) {
                         0 -> {
@@ -157,7 +152,7 @@ object LocationComponentSpec {
                             c.startActivity(Intent(Intent.ACTION_VIEW, uri))
                         }
                     }
-                })
+                }
                 .show()
     }
 

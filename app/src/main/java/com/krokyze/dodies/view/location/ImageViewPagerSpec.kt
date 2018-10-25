@@ -1,7 +1,6 @@
 package com.krokyze.dodies.view.location
 
-import android.support.v7.widget.OrientationHelper
-import android.support.v7.widget.PagerSnapHelper
+import androidx.recyclerview.widget.OrientationHelper
 import com.facebook.litho.Component
 import com.facebook.litho.ComponentContext
 import com.facebook.litho.annotations.LayoutSpec
@@ -37,7 +36,8 @@ object ImageViewPagerSpec {
 
         return Recycler.create(c)
                 .aspectRatio(16f / 9f)
-                .snapHelper(PagerSnapHelper())
+                // TODO
+                // .snapHelper(PagerSnapHelper())
                 .binder(recyclerBinder)
                 .nestedScrollingEnabled(false)
                 .build()

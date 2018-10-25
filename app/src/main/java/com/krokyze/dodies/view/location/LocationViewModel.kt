@@ -1,6 +1,6 @@
 package com.krokyze.dodies.view.location
 
-import android.arch.lifecycle.ViewModel
+import androidx.lifecycle.ViewModel
 import com.krokyze.dodies.repository.LocationRepository
 import com.krokyze.dodies.repository.api.LocationExtra
 import com.krokyze.dodies.repository.api.NetworkRequest
@@ -16,8 +16,8 @@ import io.reactivex.subjects.BehaviorSubject
  * Created by krokyze on 05/02/2018.
  */
 class LocationViewModel(
-    private val locationUrl: String,
-    private val locationRepository: LocationRepository
+        private val locationUrl: String,
+        private val locationRepository: LocationRepository
 ) : ViewModel() {
 
     private val locationExtra = BehaviorSubject.create<NetworkRequest<LocationExtra>>()

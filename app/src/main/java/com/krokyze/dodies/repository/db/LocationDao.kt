@@ -1,10 +1,6 @@
 package com.krokyze.dodies.repository.db
 
-import android.arch.persistence.room.Dao
-import android.arch.persistence.room.Insert
-import android.arch.persistence.room.OnConflictStrategy
-import android.arch.persistence.room.Query
-import android.arch.persistence.room.Update
+import androidx.room.*
 import com.krokyze.dodies.repository.data.Location
 import io.reactivex.Flowable
 import io.reactivex.Single

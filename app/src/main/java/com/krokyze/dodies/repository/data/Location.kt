@@ -1,9 +1,9 @@
 package com.krokyze.dodies.repository.data
 
-import android.arch.persistence.room.ColumnInfo
-import android.arch.persistence.room.Embedded
-import android.arch.persistence.room.Entity
-import android.arch.persistence.room.PrimaryKey
+import androidx.room.ColumnInfo
+import androidx.room.Embedded
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.clustering.ClusterItem
 import com.krokyze.dodies.repository.api.LocationsResponse
@@ -13,16 +13,16 @@ import com.krokyze.dodies.repository.api.LocationsResponse
  */
 @Entity(tableName = "locations")
 data class Location(
-    @PrimaryKey
-    @ColumnInfo(name = "url") val url: String,
-    @ColumnInfo(name = "name") val name: String,
-    @ColumnInfo(name = "type") val type: Type,
-    @Embedded val image: Image,
-    @Embedded val coordinates: Coordinates,
-    @ColumnInfo(name = "text") val text: String,
-    @ColumnInfo(name = "status") val status: Status,
-    @ColumnInfo(name = "distance") val distance: String,
-    @ColumnInfo(name = "date") val date: String
+        @PrimaryKey
+        @ColumnInfo(name = "url") val url: String,
+        @ColumnInfo(name = "name") val name: String,
+        @ColumnInfo(name = "type") val type: Type,
+        @Embedded val image: Image,
+        @Embedded val coordinates: Coordinates,
+        @ColumnInfo(name = "text") val text: String,
+        @ColumnInfo(name = "status") val status: Status,
+        @ColumnInfo(name = "distance") val distance: String,
+        @ColumnInfo(name = "date") val date: String
 ) : ClusterItem {
 
     @ColumnInfo(name = "favorite")
@@ -35,13 +35,13 @@ data class Location(
     override fun getSnippet() = text
 
     data class Image(
-        @ColumnInfo(name = "small") val small: String,
-        @ColumnInfo(name = "large") val large: String
+            @ColumnInfo(name = "small") val small: String,
+            @ColumnInfo(name = "large") val large: String
     )
 
     data class Coordinates(
-        @ColumnInfo(name = "latitude") val latitude: Double,
-        @ColumnInfo(name = "longitude") val longitude: Double
+            @ColumnInfo(name = "latitude") val latitude: Double,
+            @ColumnInfo(name = "longitude") val longitude: Double
     )
 
     enum class Type(val value: String) {

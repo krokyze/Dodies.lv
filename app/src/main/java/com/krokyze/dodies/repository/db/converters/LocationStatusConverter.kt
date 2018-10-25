@@ -1,6 +1,6 @@
 package com.krokyze.dodies.repository.db.converters
 
-import android.arch.persistence.room.TypeConverter
+import androidx.room.TypeConverter
 import com.krokyze.dodies.repository.data.Location
 
 /**

@@ -1,7 +1,7 @@
 package com.krokyze.dodies.di
 
-import android.arch.persistence.room.Room
 import android.content.Context
+import androidx.room.Room
 import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.krokyze.dodies.BuildConfig
 import com.krokyze.dodies.repository.LocationRepository

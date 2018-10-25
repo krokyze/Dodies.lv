@@ -1,7 +1,6 @@
 package com.krokyze.dodies
 
 import android.app.Application
-import android.support.annotation.NonNull
 import android.util.Log
 import com.crashlytics.android.Crashlytics
 import com.facebook.drawee.backends.pipeline.Fresco
@@ -38,7 +37,7 @@ class App : Application() {
 
     /** A tree which logs important information for crash reporting.  */
     private class CrashReportingTree : Timber.Tree() {
-        override fun log(priority: Int, tag: String?, @NonNull message: String, t: Throwable?) {
+        override fun log(priority: Int, tag: String?, message: String, t: Throwable?) {
             if (priority == Log.VERBOSE || priority == Log.DEBUG) {
                 return
             }

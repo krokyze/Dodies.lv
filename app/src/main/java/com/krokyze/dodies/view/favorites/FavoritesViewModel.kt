@@ -1,6 +1,6 @@
 package com.krokyze.dodies.view.favorites
 
-import android.arch.lifecycle.ViewModel
+import androidx.lifecycle.ViewModel
 import com.krokyze.dodies.repository.LocationRepository
 
 /**

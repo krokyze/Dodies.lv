@@ -1,9 +1,9 @@
 package com.krokyze.dodies
 
-import android.arch.persistence.db.framework.FrameworkSQLiteOpenHelperFactory
-import android.arch.persistence.room.testing.MigrationTestHelper
-import android.support.test.InstrumentationRegistry
-import android.support.test.runner.AndroidJUnit4
+import androidx.room.testing.MigrationTestHelper
+import androidx.sqlite.db.framework.FrameworkSQLiteOpenHelperFactory
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry
 import com.krokyze.dodies.repository.db.AppDatabase
 import com.krokyze.dodies.repository.db.Migrations
 import org.junit.Rule

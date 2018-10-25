@@ -1,11 +1,11 @@
 package com.krokyze.dodies.view.favorites
 
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.text.Layout
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import com.facebook.litho.Column
 import com.facebook.litho.sections.SectionContext
 import com.facebook.litho.sections.widget.RecyclerCollectionComponent
@@ -20,7 +20,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_favorites.*
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**
  * Created by krokyze on 05/02/2018.
