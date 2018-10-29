@@ -4,7 +4,12 @@ import android.text.Html
 import android.text.TextUtils
 import com.facebook.drawee.backends.pipeline.Fresco
 import com.facebook.drawee.drawable.ScalingUtils
-import com.facebook.litho.*
+import com.facebook.litho.Border
+import com.facebook.litho.ClickEvent
+import com.facebook.litho.Column
+import com.facebook.litho.Component
+import com.facebook.litho.ComponentContext
+import com.facebook.litho.Row
 import com.facebook.litho.annotations.LayoutSpec
 import com.facebook.litho.annotations.OnCreateLayout
 import com.facebook.litho.annotations.OnEvent
@@ -33,7 +38,9 @@ object FavoritesListItemSpec {
                                 .widthDip(YogaEdge.VERTICAL, 8)
                                 .widthDip(YogaEdge.HORIZONTAL, 16)
                                 .build())
-                        .child(createImage(c, location)?.marginDip(YogaEdge.END, 16f))
+                        .child(createImage(c, location)
+                                ?.flexShrink(0f)
+                                ?.marginDip(YogaEdge.END, 16f))
                         .child(Column.create(c)
                                 .child(createTitle(c, location))
                                 .child(createDescription(c, location)))
@@ -44,14 +51,10 @@ object FavoritesListItemSpec {
                 .build()
     }
 
-    interface OnLocationClickListener {
-        fun onLocationClick(location: Location)
-    }
-
     @OnEvent(ClickEvent::class)
     @JvmStatic
-    fun onLocationClick(c: ComponentContext, @Prop location: Location, @Prop listener: OnLocationClickListener) {
-        listener.onLocationClick(location)
+    fun onLocationClick(c: ComponentContext, @Prop location: Location, @Prop onLocationListener: (Location) -> Unit) {
+        onLocationListener(location)
     }
 
     private fun createImage(c: ComponentContext, location: Location): FrescoImage.Builder? {

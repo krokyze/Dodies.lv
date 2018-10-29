@@ -16,14 +16,14 @@ object FavoritesListSectionSpec {
 
     @OnCreateChildren
     @JvmStatic
-    fun onCreateChildren(c: SectionContext, @Prop locations: List<Location>, @Prop listener: FavoritesListItemSpec.OnLocationClickListener): Children {
+    fun onCreateChildren(c: SectionContext, @Prop locations: List<Location>, @Prop onLocationListener: (Location) -> Unit): Children {
         return Children.create()
                 .children(locations.map { location ->
                     SingleComponentSection.create(c)
                             .key(location.url)
                             .component(FavoritesListItem.create(c)
                                     .location(location)
-                                    .listener(listener))
+                                    .onLocationListener(onLocationListener))
                 }).build()
     }
 }

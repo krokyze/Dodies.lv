@@ -8,7 +8,12 @@ import android.net.Uri
 import android.text.Html
 import android.text.Layout
 import androidx.appcompat.app.AlertDialog
-import com.facebook.litho.*
+import com.facebook.litho.Border
+import com.facebook.litho.ClickEvent
+import com.facebook.litho.Column
+import com.facebook.litho.Component
+import com.facebook.litho.ComponentContext
+import com.facebook.litho.Row
 import com.facebook.litho.annotations.LayoutSpec
 import com.facebook.litho.annotations.OnCreateLayout
 import com.facebook.litho.annotations.OnEvent
@@ -99,14 +104,10 @@ object LocationComponentSpec {
                         ))
     }
 
-    interface OnFavoriteClickListener {
-        fun onFavorite()
-    }
-
     @OnEvent(ClickEvent::class)
     @JvmStatic
-    fun onFavoriteClick(c: ComponentContext, @Prop onFavoriteClickListener: OnFavoriteClickListener) {
-        onFavoriteClickListener.onFavorite()
+    fun onFavoriteClick(c: ComponentContext, @Prop onFavoriteListener: () -> Unit) {
+        onFavoriteListener()
     }
 
     @OnEvent(ClickEvent::class)
@@ -222,13 +223,9 @@ object LocationComponentSpec {
                 .build()
     }
 
-    interface OnSeeMoreClickListener {
-        fun onSeeMore()
-    }
-
     @OnEvent(ClickEvent::class)
     @JvmStatic
-    fun onSeeMoreClick(c: ComponentContext, @Prop onSeeMoreClickListener: OnSeeMoreClickListener) {
-        onSeeMoreClickListener.onSeeMore()
+    fun onSeeMoreClick(c: ComponentContext, @Prop onSeeMoreListener: () -> Unit) {
+        onSeeMoreListener()
     }
 }

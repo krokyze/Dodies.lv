@@ -1,6 +1,5 @@
 package com.krokyze.dodies.view.location
 
-import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,8 +8,6 @@ import android.widget.Toast
 import com.facebook.litho.Component
 import com.facebook.litho.ComponentContext
 import com.facebook.litho.ComponentTree
-import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.krokyze.dodies.R
 import com.krokyze.dodies.repository.api.LocationExtra
@@ -34,16 +31,6 @@ class LocationFragment : BottomSheetDialogFragment() {
     private var disposable: Disposable? = null
 
     private val componentContext by lazy { ComponentContext(requireContext()) }
-
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        return super.onCreateDialog(savedInstanceState).apply {
-            setOnShowListener { dialogInterface ->
-                val dialog = dialogInterface as BottomSheetDialog
-                val bottomSheet = dialog.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
-                BottomSheetBehavior.from(bottomSheet).state = BottomSheetBehavior.STATE_EXPANDED
-            }
-        }
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         return inflater.inflate(R.layout.fragment_location, container, false)
@@ -77,16 +64,8 @@ class LocationFragment : BottomSheetDialogFragment() {
         return LocationComponent.create(componentContext)
                 .location(location)
                 .locationExtra(locationExtra)
-                .onFavoriteClickListener(object : LocationComponentSpec.OnFavoriteClickListener {
-                    override fun onFavorite() {
-                        viewModel.onFavorite(location)
-                    }
-                })
-                .onSeeMoreClickListener(object : LocationComponentSpec.OnSeeMoreClickListener {
-                    override fun onSeeMore() {
-                        viewModel.onSeeMore()
-                    }
-                })
+                .onFavoriteListener { viewModel.onFavorite(location) }
+                .onSeeMoreListener { viewModel.onSeeMore() }
                 .build()
     }
 

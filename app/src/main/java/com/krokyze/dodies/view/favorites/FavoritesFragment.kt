@@ -13,7 +13,6 @@ import com.facebook.litho.widget.Text
 import com.facebook.yoga.YogaJustify
 import com.krokyze.dodies.R
 import com.krokyze.dodies.repository.data.Location
-import com.krokyze.dodies.view.favorites.spec.FavoritesListItemSpec
 import com.krokyze.dodies.view.favorites.spec.FavoritesListSection
 import com.krokyze.dodies.view.location.LocationFragment
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -62,12 +61,10 @@ class FavoritesFragment : Fragment() {
                     .section(
                             FavoritesListSection.create(sectionContext)
                                     .locations(locations)
-                                    .listener(object : FavoritesListItemSpec.OnLocationClickListener {
-                                        override fun onLocationClick(location: Location) {
-                                            LocationFragment.newInstance(location)
-                                                    .show(childFragmentManager, null)
-                                        }
-                                    })
+                                    .onLocationListener { location ->
+                                        LocationFragment.newInstance(location)
+                                                .show(childFragmentManager, null)
+                                    }
                     )
                     .disablePTR(true)
                     .build())
