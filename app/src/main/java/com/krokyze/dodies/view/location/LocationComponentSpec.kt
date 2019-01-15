@@ -43,10 +43,10 @@ object LocationComponentSpec {
                 .child(createImage(c, location, locationExtra))
                 .child(Column.create(c)
                         .border(Border.create(c)
-                                .widthDip(YogaEdge.START, 16)
-                                .widthDip(YogaEdge.TOP, 24)
-                                .widthDip(YogaEdge.END, 16)
-                                .widthDip(YogaEdge.BOTTOM, 24)
+                                .widthDip(YogaEdge.START, 16f)
+                                .widthDip(YogaEdge.TOP, 24f)
+                                .widthDip(YogaEdge.END, 16f)
+                                .widthDip(YogaEdge.BOTTOM, 24f)
                                 .build())
                         .child(createTitle(c, location, locationExtra))
                         .child(createCoordinates(c, location).marginDip(YogaEdge.TOP, 16f))
@@ -118,7 +118,7 @@ object LocationComponentSpec {
             type = "text/plain"
             putExtra(Intent.EXTRA_TEXT, "https://dodies.lv${location.url}")
         }
-        c.startActivity(Intent.createChooser(intent, c.getString(R.string.share)))
+        c.androidContext.startActivity(Intent.createChooser(intent, c.getString(R.string.share)))
     }
 
     private fun createCoordinates(c: ComponentContext, location: Location): Row.Builder {
@@ -140,17 +140,17 @@ object LocationComponentSpec {
     @OnEvent(ClickEvent::class)
     @JvmStatic
     fun onCoordinatesClick(c: ComponentContext, @Prop location: Location) {
-        AlertDialog.Builder(c)
+        AlertDialog.Builder(c.androidContext)
                 .setItems(R.array.coordinates_dialog_items) { _, index ->
                     val locationString = "${location.coordinates.latitude},${location.coordinates.longitude}"
                     when (index) {
                         0 -> {
-                            val clipboardManager = c.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                            val clipboardManager = c.androidContext.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
                             clipboardManager.primaryClip = ClipData.newPlainText(location.name, locationString)
                         }
                         else -> {
                             val uri = Uri.parse("geo:$locationString")
-                            c.startActivity(Intent(Intent.ACTION_VIEW, uri))
+                            c.androidContext.startActivity(Intent(Intent.ACTION_VIEW, uri))
                         }
                     }
                 }
