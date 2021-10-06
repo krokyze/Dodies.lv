@@ -1,7 +1,8 @@
 # Built application files
 *.apk
+*.aar
 *.ap_
-output.json
+*.aab
 
 # Files for the ART/Dalvik VM
 *.dex
@@ -35,21 +36,26 @@ captures/
 
 # IntelliJ
 *.iml
+.idea/misc.xml
 .idea/workspace.xml
 .idea/tasks.xml
 .idea/gradle.xml
+.idea/assetWizardSettings.xml
 .idea/dictionaries
 .idea/libraries
-.idea/markdown-navigator*
-.idea/caches/build_file_checksums.ser
+.idea/codeStyles
+.idea/jarRepositories.xml
+# Android Studio 3 in .gitignore file.
+.idea/caches
+.idea/modules.xml
 
 # Keystore files
-# Uncomment the following line if you do not want to check your keystore files in.
 *.jks
-keystore.properties
+*.keystore
 
 # External native build folder generated in Android Studio 2.2 and later
 .externalNativeBuild
+.cxx/
 
 # Google Services (e.g. APIs or Firebase)
 google-services.json
@@ -66,8 +72,18 @@ fastlane/screenshots
 fastlane/test_output
 fastlane/readme.md
 
-# Fabric
-fabric.properties
+# Version control
+vcs.xml
+
+# lint
+lint/intermediates/
+lint/generated/
+lint/outputs/
+lint/tmp/
+lint/reports/
+
+# Android Profiling
+*.hprof
 
 # Google
 google_maps_api.xml
